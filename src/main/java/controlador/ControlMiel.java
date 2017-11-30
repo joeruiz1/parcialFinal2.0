@@ -9,6 +9,9 @@ import Dao.CrudColmena;
 import VO.RegistroMiel;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -67,18 +70,22 @@ public class ControlMiel extends HttpServlet {
         int K_colmena =Integer.parseInt(KilosMiel);
 
         if (KilosMiel.trim().length() > 0  ) {
-            resultado = true;
-            RegistroMiel m=new RegistroMiel(fecha,recolector,id_colmena,K_colmena);
-            CrudColmena c=new CrudColmena();
-            c.agregarColmena(m);
-         
-            RequestDispatcher rq = request.getRequestDispatcher("index.jsp");
-            if (resultado == true) {
-                request.setAttribute("resultado", true);
-            } else {
-                request.setAttribute("resultado", false);
-            }
-            rq.forward(request, response);
+         try {
+             resultado = true;
+             RegistroMiel m=new RegistroMiel(fecha,recolector,id_colmena,K_colmena);
+             CrudColmena c=new CrudColmena();
+             c.agregarColmena(m);
+             
+             RequestDispatcher rq = request.getRequestDispatcher("index.jsp");
+             if (resultado == true) {
+                 request.setAttribute("resultado", true);
+             } else {
+                 request.setAttribute("resultado", false);
+             }
+             rq.forward(request, response);
+         } catch (URISyntaxException ex) {
+             Logger.getLogger(ControlMiel.class.getName()).log(Level.SEVERE, null, ex);
+         }
         }
     }
 
