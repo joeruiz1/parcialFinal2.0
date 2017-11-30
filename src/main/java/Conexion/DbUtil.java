@@ -1,41 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Conexion;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.*;
 
+/**
+ *
+ * @author fernando stiven
+ */
 public class DbUtil {
-	private static Connection connection = null;
 
-    public static Connection getConnection() {
-        if (connection != null)
-            return connection;
-        else {
+    private static Connection CONEXION = null;
+
+    public static Connection getConnection() throws URISyntaxException {
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+        if (CONEXION == null) {
             try {
-            	Properties prop = new Properties();
-                InputStream inputStream = DbUtil.class.getClassLoader().getResourceAsStream("/db.properties");
-                prop.load(inputStream);
-                String driver = prop.getProperty("driver");
-                String url = prop.getProperty("url");
-                String user = prop.getProperty("user");
-                String password = prop.getProperty("password");
-                Class.forName(driver);
-                connection = DriverManager.getConnection(url, user, password);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                CONEXION = DriverManager.getConnection(dbUrl, username, password);
             } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                System.out.println("Connection Failed! Check output console");
                 e.printStackTrace();
             }
-            return connection;
+
+        }
+        return CONEXION;
+    }
+
+    public static void closeConnection() {
+        try {
+            if (CONEXION != null) {
+                CONEXION.close();
+                CONEXION = null;
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }
+
 }

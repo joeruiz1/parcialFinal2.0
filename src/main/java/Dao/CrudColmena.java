@@ -5,9 +5,11 @@
  */
 package Dao;
 
+
 import Conexion.DbUtil;
 import VO.Colmena;
 import VO.RegistroMiel;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,15 +24,15 @@ import java.util.List;
  */
 public class CrudColmena {
 
-    private Connection connection;
+    private Connection CONEXION;
 
-    public CrudColmena() {
-        connection = DbUtil.getConnection();
+    public CrudColmena() throws URISyntaxException {
+        CONEXION = DbUtil.getConnection();
     }
 
     public void agregarColmena(RegistroMiel RM) {
         try {
-            PreparedStatement preparedStatement = connection
+            PreparedStatement preparedStatement = CONEXION
                     .prepareStatement("insert into RegistrarMiel(fecha,recolector,idColmena,KilosMiel) values (?, ?, ?, ? )");
             // Parameters start with 1
             preparedStatement.setString(1, RM.getFecha());
@@ -48,7 +50,7 @@ public List<Colmena> listarColmena() {
         List<Colmena> users = new ArrayList<Colmena>();
         try {
             System.out.println("LLegue hasta aca");
-            Statement statement = connection.createStatement();
+            Statement statement = CONEXION.createStatement();
 
             ResultSet rs = statement.executeQuery("select * from Colmena");
             while (rs.next()) {
@@ -70,7 +72,7 @@ public List<Colmena> listarColmena() {
         List<RegistroMiel> users = new ArrayList<RegistroMiel>();
         try {
             System.out.println("LLegue hasta aca olllllaaaaaa");
-            Statement statement = connection.createStatement();
+            Statement statement = CONEXION.createStatement();
 
             ResultSet rs = statement.executeQuery("select idColmena, sum(KilosMiel) as total from registrarmiel where recolector!=('pedro') group by idColmena having (total)>2 order by sum(KilosMiel)");
             while (rs.next()) {
