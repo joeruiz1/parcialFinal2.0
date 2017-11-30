@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>ControlMiel</servlet-name>
+        <servlet-class>controlador.ControlMiel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListarColmena</servlet-name>
+        <servlet-class>controlador.ListarColmena</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ColmenasGrandes</servlet-name>
+        <servlet-class>controlador.ColmenasGrandes</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ControlMiel</servlet-name>
+        <url-pattern>/ControlMiel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListarColmena</servlet-name>
+        <url-pattern>/ListarColmena</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ColmenasGrandes</servlet-name>
+        <url-pattern>/ColmenasGrandes</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
